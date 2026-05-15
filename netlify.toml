@@ -1,8 +1,8 @@
 [build]
-  base    = "" 
+  base    = "renderer"
   command = "npm install && npm run build"
-  publish = "renderer/out"
+  publish = "out"
 
 [build.environment]
   NODE_VERSION = "20"
-  # قمنا بإزالة NODE_OPTIONS تماماً لتجنب خطأ "Invalid value"
+  # لا تضع NODE_OPTIONS هنا
