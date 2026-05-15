@@ -1,12 +1,9 @@
 [build]
-  # اترك الـ base فارغاً أو "/" لأن package.json في الجذر
   base    = "" 
-  
-  # الأوامر تنفذ من الجذر، لكننا نوجه Next.js لمجلد renderer
-  command = "npm install && next build renderer"
-  
-  # مكان المجلد الناتج عن البناء (غالباً يكون داخل renderer)
+  command = "npm install && npm run build"
   publish = "renderer/out"
 
 [build.environment]
-  NODE_VERSION = "20"
+  NODE_VERSION = "20.18.0"
+  # السطر القادم هو الحل السحري لخطأ ignoreDeprecations
+  NODE_OPTIONS = "--no-deprecation"

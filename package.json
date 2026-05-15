@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "cross-env PORT=8889 nextron",
     "dev:default": "nextron",
-    "build": "next build",
+    "build": "next build renderer",
     "build:win32": "nextron build --win --ia32",
     "build:win64": "nextron build --win --x64",
     "build:mac": "nextron build --mac --x64",
