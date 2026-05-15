@@ -5,5 +5,4 @@
 
 [build.environment]
   NODE_VERSION = "20"
-  # هذا السطر يمنع انهيار البناء بسبب التحذيرات التقنية في Node 20
-  NODE_OPTIONS = "--no-deprecation"
+  # قمنا بإزالة NODE_OPTIONS تماماً لتجنب خطأ "Invalid value"
