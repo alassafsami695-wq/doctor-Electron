@@ -59,8 +59,6 @@ async function fetchApi<T>(
     credentials: 'include',
   });
 
-
-
   if (response.status === 401) {
     removeToken();
     if (typeof window !== 'undefined' && !isRedirecting) {
