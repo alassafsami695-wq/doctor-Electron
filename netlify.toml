@@ -4,4 +4,5 @@
   publish = "renderer/out"
 
 [build.environment]
-  NODE_VERSION = "20"
+  # تغيير النسخة إلى 18 سيحل مشكلة الـ ignoreDeprecations فوراً
+  NODE_VERSION = "18"
