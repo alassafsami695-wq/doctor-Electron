@@ -1,3 +1,5 @@
+// src/lib/api.ts
+
 import type { User } from '../types';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://doctor-production-78aa.up.railway.app/api';
@@ -39,16 +41,6 @@ async function fetchApi<T>(
     headers['Authorization'] = `Bearer ${token}`;
   }
 
-  // ✅ إضافة XSRF-TOKEN من الكوكيز
-  const xsrfToken = document.cookie
-    .split('; ')
-    .find(row => row.startsWith('XSRF-TOKEN='))
-    ?.split('=')[1];
-  
-  if (xsrfToken) {
-    headers['X-XSRF-TOKEN'] = decodeURIComponent(xsrfToken);
-  }
-
   if (!(options.body instanceof FormData)) {
     headers['Content-Type'] = 'application/json';
   }
@@ -56,7 +48,6 @@ async function fetchApi<T>(
   const response = await fetch(url, { 
     ...options, 
     headers,
-    credentials: 'include',
   });
 
   if (response.status === 401) {

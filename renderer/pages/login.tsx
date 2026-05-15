@@ -1,3 +1,5 @@
+// src/pages/login.tsx (أو pages/index.tsx حسب هيكلة مشروعك)
+
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { authApi, setToken } from '../lib/api';
@@ -38,7 +40,6 @@ export default function AuthPage() {
   const router = useRouter();
   const [mode, setMode] = useState<AuthMode>('login');
 
-  // ✅ أزلت password_confirmation
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -66,48 +67,40 @@ export default function AuthPage() {
       setToken(response.access_token);
       router.push(response.role === 'super_admin' ? '/admin/dashboard' : '/dashboard');
     } catch (err: any) {
-      if (err.response?.data?.needs_verification) {
-        setFormData({ ...formData, email: err.response.data.email });
+      if (err.message?.includes('needs_verification') || err.message?.includes('تفعيل')) {
         setMode('verify');
         setMessage('الرجاء إدخال كود التحقق لتفعيل حسابك');
       } else {
-        setError(err.response?.data?.message || 'بيانات الدخول غير صحيحة');
+        setError(err.message || 'بيانات الدخول غير صحيحة');
       }
     } finally {
       setLoading(false);
     }
   };
 
-  // 2. التسجيل الجديد (بدون password_confirmation)
+  // 2. التسجيل الجديد
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError('');
 
     try {
-        // تأكد من أن authApi.register معرفة وتستقبل هذه البيانات
-        const response = await authApi.register({
-            name: formData.name,
-            email: formData.email,
-            password: formData.password,
-            phone: formData.phone,
-            clinic_address: formData.clinic_address,
-        });
+      const response = await authApi.register({
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        phone: formData.phone,
+        clinic_address: formData.clinic_address,
+      });
 
-        // استخدام الاستجابة القادمة من السيرفر
-        setMessage(response.message || 'تم التسجيل بنجاح! الرجاء إدخال كود التحقق المرسل لبريدك');
-        setMode('verify');
+      setMessage(response.message || 'تم التسجيل بنجاح! الرجاء إدخال كود التحقق المرسل لبريدك');
+      setMode('verify');
     } catch (err: any) {
-        // معالجة الأخطاء القادمة من لارافيل (خطأ 422 أو 500)
-        const errorMsg = err.response?.data?.errors 
-            ? Object.values(err.response.data.errors).flat().join(', ')
-            : (err.response?.data?.message || 'حدث خطأ أثناء التسجيل');
-        
-        setError(errorMsg);
+      setError(err.message || 'حدث خطأ أثناء التسجيل');
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
-};
+  };
 
   // 3. التحقق من الكود
   const handleVerify = async (e: React.FormEvent) => {
@@ -122,7 +115,7 @@ export default function AuthPage() {
         router.push('/dashboard');
       }, 1500);
     } catch (err: any) {
-      setError(err.response?.data?.message || 'كود التحقق غير صحيح');
+      setError(err.message || 'كود التحقق غير صحيح');
     } finally {
       setLoading(false);
     }
@@ -136,7 +129,7 @@ export default function AuthPage() {
       const response = await authApi.resendCode(formData.email);
       setMessage(response.message || 'تم إعادة إرسال كود جديد!');
     } catch (err: any) {
-      setError(err.response?.data?.message || 'فشل إعادة الإرسال');
+      setError(err.message || 'فشل إعادة الإرسال');
     } finally {
       setLoading(false);
     }
@@ -229,8 +222,6 @@ export default function AuthPage() {
                 />
               </>
             )}
-
-            {/* ✅ أزلت حقل تأكيد كلمة المرور بالكامل */}
 
             {mode === 'verify' && (
               <>
