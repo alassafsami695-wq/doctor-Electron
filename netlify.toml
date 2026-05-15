@@ -1,6 +1,7 @@
 [build]
-  command = "cd renderer && npm install && npm run build"
-  publish = "renderer/out"
+  base    = "renderer"
+  command = "npm install && npm run build"
+  publish = "out"
 
 [build.environment]
   NODE_VERSION = "20"
