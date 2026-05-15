@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES2020",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -17,41 +13,22 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
+    "plugins": [{ "name": "next" }],
     "paths": {
-      "@/*": [
-        "./renderer/*"
-      ],
-      "@/components/*": [
-        "./renderer/components/*"
-      ],
-      "@/lib/*": [
-        "./renderer/lib/*"
-      ],
-      "@/types": [
-        "./renderer/types"
-      ],
-      "@/styles/*": [
-        "./renderer/styles/*"
-      ]
+      "@/*": ["./renderer/*"],
+      "@/components/*": ["./renderer/components/*"],
+      "@/lib/*": ["./renderer/lib/*"],
+      "@/types": ["./renderer/types"],
+      "@/styles/*": ["./renderer/styles/*"]
     },
-    "baseUrl": ".",
-    "forceConsistentCasingInFileNames": true,
-    "ignoreDeprecations": "6.0"
+    "forceConsistentCasingInFileNames": true
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"
-, "next.config.js"  ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "app"
-  ]
+    ".next/types/**/*.ts",
+    "renderer/next.config.js"
+  ],
+  "exclude": ["node_modules", "dist", "app"]
 }

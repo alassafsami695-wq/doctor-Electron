@@ -4,7 +4,12 @@ const nextConfig = {
     images: {
         unoptimized: true
     },
-    trailingSlash: true
+    trailingSlash: true,
+    // تجاوز مشكلة ignoreDeprecations
+    experimental: {
+        workerThreads: false,
+        cpus: 1
+    }
 };
 
 module.exports = nextConfig;
