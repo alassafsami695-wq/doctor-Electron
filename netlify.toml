@@ -4,5 +4,6 @@
   publish = "renderer/out"
 
 [build.environment]
-  # تغيير النسخة إلى 18 سيحل مشكلة الـ ignoreDeprecations فوراً
-  NODE_VERSION = "18"
+  NODE_VERSION = "20"
+  # هذا السطر يمنع انهيار البناء بسبب التحذيرات التقنية في Node 20
+  NODE_OPTIONS = "--no-deprecation"
