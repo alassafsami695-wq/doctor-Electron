@@ -4,6 +4,4 @@
   publish = "renderer/out"
 
 [build.environment]
-  NODE_VERSION = "20.18.0"
-  # السطر القادم هو الحل السحري لخطأ ignoreDeprecations
-  NODE_OPTIONS = "--no-deprecation"
+  NODE_VERSION = "20"
