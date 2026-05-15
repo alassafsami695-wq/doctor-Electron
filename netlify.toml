@@ -1,4 +1,7 @@
 [build]
-  base    = "renderer"
-  command = "npm install && npm run build"
-  publish = "out"
+  # لا نضع base هنا، سنقوم بالدخول للمجلد يدوياً في سطر الأوامر
+  command = "cd renderer && npm install && npm run build"
+  publish = "renderer/out"
+
+[build.environment]
+  NODE_VERSION = "18"
