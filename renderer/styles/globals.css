@@ -2,16 +2,280 @@
 @tailwind components;
 @tailwind utilities;
 
-/* في Tailwind v4، يتم تعريف التنسيقات المخصصة داخل كتلة @theme أو مباشرة باستخدام @utility */
-
+/* ===== Base Styles ===== */
 @layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
   body {
-    @apply bg-gray-900 text-white;
+    font-family: 'Segoe UI', 'Tahoma', 'Geneva', 'Verdana', sans-serif;
+    background-color: #f8fafc;
+    color: #1e293b;
+  }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+  }
+
+  /* Remove number input arrows */
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type="number"] {
+    appearance: textfield;
+    -moz-appearance: textfield;
+  }
+
+  /* Date input styling */
+  input[type="date"],
+  input[type="datetime-local"] {
+    font-family: inherit;
   }
 }
 
+/* ===== Component Styles ===== */
 @layer components {
-  .btn-blue {
-    @apply bg-blue-600 px-4 py-2 font-bold text-white rounded hover:bg-blue-500;
+  /* Card hover effect */
+  .card-hover {
+    @apply transition-all duration-200 hover:shadow-md;
   }
+
+  /* Button primary gradient */
+  .btn-primary {
+    @apply bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-medium rounded-xl 
+           hover:shadow-lg hover:shadow-cyan-500/25 transition-all active:scale-95;
+  }
+
+  /* Input focus ring */
+  .input-focus {
+    @apply focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-all;
+  }
+
+  /* Status badges */
+  .badge-success {
+    @apply bg-emerald-100 text-emerald-700 border border-emerald-200 px-2 py-1 rounded-lg text-xs font-medium;
+  }
+
+  .badge-warning {
+    @apply bg-amber-100 text-amber-700 border border-amber-200 px-2 py-1 rounded-lg text-xs font-medium;
+  }
+
+  .badge-danger {
+    @apply bg-red-100 text-red-700 border border-red-200 px-2 py-1 rounded-lg text-xs font-medium;
+  }
+
+  .badge-info {
+    @apply bg-cyan-100 text-cyan-700 border border-cyan-200 px-2 py-1 rounded-lg text-xs font-medium;
+  }
+}
+
+/* ===== Animation Utilities ===== */
+@layer utilities {
+  /* Fade in animation */
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Slide in from right (RTL) */
+  .animate-slide-in {
+    animation: slideIn 0.3s ease-out;
+  }
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  /* Pulse ring for notifications */
+  .animate-pulse-ring {
+    animation: pulseRing 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+  }
+
+  @keyframes pulseRing {
+    0% {
+      transform: scale(0.8);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1.5);
+      opacity: 0;
+    }
+  }
+
+  /* Spin slow */
+  .animate-spin-slow {
+    animation: spin 3s linear infinite;
+  }
+
+  /* Glass morphism */
+  .glass {
+    @apply bg-white/10 backdrop-blur-lg border border-white/20;
+  }
+
+  /* Text gradient */
+  .text-gradient {
+    @apply bg-gradient-to-r from-cyan-500 to-blue-500 bg-clip-text text-transparent;
+  }
+}
+
+/* ===== RTL Specific ===== */
+[dir="rtl"] {
+  .sidebar-toggle {
+    left: -12px;
+    right: auto;
+  }
+
+  .mr-auto {
+    margin-left: auto;
+    margin-right: 0;
+  }
+
+  .ml-auto {
+    margin-right: auto;
+    margin-left: 0;
+  }
+}
+
+/* ===== Print Styles ===== */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: white;
+  }
+}
+
+/* ===== Responsive Table ===== */
+@media (max-width: 768px) {
+  .responsive-table {
+    @apply block w-full overflow-x-auto;
+  }
+}
+
+/* ===== Loading Skeleton ===== */
+.skeleton {
+  @apply bg-slate-200 rounded animate-pulse;
+}
+
+/* ===== Modal Overlay ===== */
+.modal-overlay {
+  @apply fixed inset-0 bg-black/50 backdrop-blur-sm z-50;
+}
+
+/* ===== Toast Notification ===== */
+.toast {
+  @apply fixed bottom-4 left-4 z-50 px-4 py-3 rounded-xl shadow-lg text-white font-medium text-sm;
+}
+
+.toast-success {
+  @apply bg-emerald-500;
+}
+
+.toast-error {
+  @apply bg-red-500;
+}
+
+.toast-warning {
+  @apply bg-amber-500;
+}
+
+/* ===== Custom Checkbox ===== */
+.custom-checkbox {
+  @apply w-5 h-5 rounded border-2 border-slate-300 checked:bg-cyan-500 checked:border-cyan-500 
+         transition-colors cursor-pointer appearance-none;
+  background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* ===== Tooth in Odontogram ===== */
+.tooth {
+  @apply relative transition-all duration-200 hover:scale-110 hover:shadow-lg cursor-pointer;
+}
+
+.tooth::after {
+  content: attr(data-number);
+  @apply absolute -bottom-5 left-1/2 -translate-x-1/2 text-xs font-medium text-slate-500;
+}
+
+/* ===== Calendar Day ===== */
+.calendar-day {
+  @apply w-10 h-10 rounded-lg flex items-center justify-center text-sm font-medium transition-all cursor-pointer;
+}
+
+.calendar-day:hover {
+  @apply bg-cyan-50 text-cyan-600;
+}
+
+.calendar-day.active {
+  @apply bg-cyan-500 text-white shadow-md;
+}
+
+.calendar-day.today {
+  @apply border-2 border-cyan-400 text-cyan-600;
+}
+
+/* ===== Financial Chart Bar ===== */
+.chart-bar {
+  @apply rounded-t-lg transition-all duration-500 hover:opacity-80;
+}
+
+/* ===== Partner Card ===== */
+.partner-card {
+  @apply relative overflow-hidden;
+}
+
+.partner-card::before {
+  content: '';
+  @apply absolute top-0 right-0 w-1 h-full;
+}
+
+.partner-card.lab::before {
+  @apply bg-purple-400;
+}
+
+.partner-card.company::before {
+  @apply bg-blue-400;
 }
