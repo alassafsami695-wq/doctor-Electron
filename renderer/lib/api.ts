@@ -1,6 +1,6 @@
 import type { User } from '../types';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://doctor-production-78aa.up.railway.app/api';
 
 export const getToken = (): string | null => {
   if (typeof window !== 'undefined') {
@@ -43,7 +43,11 @@ async function fetchApi<T>(
     headers['Content-Type'] = 'application/json';
   }
 
-  const response = await fetch(url, { ...options, headers });
+  const response = await fetch(url, { 
+    ...options, 
+    headers,
+    credentials: 'include',
+  });
 
   if (response.status === 401) {
     removeToken();
