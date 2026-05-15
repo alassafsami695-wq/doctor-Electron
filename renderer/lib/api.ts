@@ -39,6 +39,16 @@ async function fetchApi<T>(
     headers['Authorization'] = `Bearer ${token}`;
   }
 
+  // ✅ إضافة XSRF-TOKEN من الكوكيز
+  const xsrfToken = document.cookie
+    .split('; ')
+    .find(row => row.startsWith('XSRF-TOKEN='))
+    ?.split('=')[1];
+  
+  if (xsrfToken) {
+    headers['X-XSRF-TOKEN'] = decodeURIComponent(xsrfToken);
+  }
+
   if (!(options.body instanceof FormData)) {
     headers['Content-Type'] = 'application/json';
   }
@@ -48,6 +58,8 @@ async function fetchApi<T>(
     headers,
     credentials: 'include',
   });
+
+
 
   if (response.status === 401) {
     removeToken();
