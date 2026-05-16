@@ -8,3 +8,6 @@ next-env.d.ts
 # build
 /app
 /dist
+
+# Local Netlify folder
+.netlify
