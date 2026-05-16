@@ -88,16 +88,8 @@ export const authApi = {
       '/login', { email, password }
     ),
 
-  register: (data: { name: string; email: string; password: string; phone: string; clinic_address: string }) => 
-    api.post<{ message: string; email: string; debug_code?: string }>('/register', data),
-
-  verifyCode: (email: string, code: string) => 
-    api.post<{ access_token: string; token_type: string; role: string; user: User; message: string }>(
-      '/verify-code', { email, code }
-    ),
-
-  resendCode: (email: string) => 
-    api.post<{ message: string; debug_code?: string }>('/resend-code', { email }),
+  register: (data: { name: string; email: string; password: string; phone: string; clinic_address: string; doctor_code: string }) => 
+    api.post<{ access_token: string; token_type: string; role: string; user: User; message: string }>('/register', data),
 
   logout: () => api.post('/logout', {}),
   getUser: () => api.get<User>('/user'),

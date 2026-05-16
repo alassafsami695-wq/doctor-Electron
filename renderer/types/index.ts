@@ -25,6 +25,15 @@ export interface AuthResponse {
   has_active_subscription: boolean;
 }
 
+export interface DoctorCode {
+  id: number;
+  code: string;
+  is_used: boolean;
+  expires_at: string;
+  created_at: string;
+  updated_at: string;
+}
+
 // ===== Patient Types =====
 export interface Patient {
   id: number;

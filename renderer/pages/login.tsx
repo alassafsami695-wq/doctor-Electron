@@ -1,10 +1,10 @@
-// src/pages/login.tsx (أو pages/index.tsx حسب هيكلة مشروعك)
+// src/pages/login.tsx
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { authApi, setToken } from '../lib/api';
 
-type AuthMode = 'login' | 'register' | 'verify';
+type AuthMode = 'login' | 'register';
 
 interface InputProps {
   label: string;
@@ -46,7 +46,7 @@ export default function AuthPage() {
     password: '',
     phone: '',
     clinic_address: '',
-    code: ''
+    doctor_code: ''
   });
 
   const [loading, setLoading] = useState(false);
@@ -67,18 +67,13 @@ export default function AuthPage() {
       setToken(response.access_token);
       router.push(response.role === 'super_admin' ? '/admin/dashboard' : '/dashboard');
     } catch (err: any) {
-      if (err.message?.includes('needs_verification') || err.message?.includes('تفعيل')) {
-        setMode('verify');
-        setMessage('الرجاء إدخال كود التحقق لتفعيل حسابك');
-      } else {
-        setError(err.message || 'بيانات الدخول غير صحيحة');
-      }
+      setError(err.message || 'بيانات الدخول غير صحيحة');
     } finally {
       setLoading(false);
     }
   };
 
-  // 2. التسجيل الجديد
+  // 2. التسجيل الجديد (برمز الأدمن)
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -91,45 +86,18 @@ export default function AuthPage() {
         password: formData.password,
         phone: formData.phone,
         clinic_address: formData.clinic_address,
+        doctor_code: formData.doctor_code,
       });
 
-      setMessage(response.message || 'تم التسجيل بنجاح! الرجاء إدخال كود التحقق المرسل لبريدك');
-      setMode('verify');
-    } catch (err: any) {
-      setError(err.message || 'حدث خطأ أثناء التسجيل');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // 3. التحقق من الكود
-  const handleVerify = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
-    try {
-      const response = await authApi.verifyCode(formData.email, formData.code);
       setToken(response.access_token);
-      setMessage('تم تفعيل حسابك بنجاح! جاري التوجيه...');
+      setMessage(response.message || 'تم التسجيل بنجاح!');
+      
       setTimeout(() => {
         router.push('/dashboard');
       }, 1500);
-    } catch (err: any) {
-      setError(err.message || 'كود التحقق غير صحيح');
-    } finally {
-      setLoading(false);
-    }
-  };
 
-  // 4. إعادة إرسال الكود
-  const handleResendCode = async () => {
-    setLoading(true);
-    setError('');
-    try {
-      const response = await authApi.resendCode(formData.email);
-      setMessage(response.message || 'تم إعادة إرسال كود جديد!');
     } catch (err: any) {
-      setError(err.message || 'فشل إعادة الإرسال');
+      setError(err.message || 'حدث خطأ أثناء التسجيل');
     } finally {
       setLoading(false);
     }
@@ -151,9 +119,7 @@ export default function AuthPage() {
         <div className="bg-slate-800/50 backdrop-blur-xl rounded-2xl p-6 border border-white/10 shadow-2xl">
 
           <h2 className="text-xl font-bold text-white mb-6 text-center">
-            {mode === 'login' && 'تسجيل الدخول'}
-            {mode === 'register' && 'إنشاء حساب طبيب جديد'}
-            {mode === 'verify' && 'تأكيد الحساب'}
+            {mode === 'login' ? 'تسجيل الدخول' : 'إنشاء حساب طبيب جديد'}
           </h2>
 
           {error && (
@@ -169,7 +135,7 @@ export default function AuthPage() {
           )}
 
           <form 
-            onSubmit={mode === 'login' ? handleLogin : mode === 'register' ? handleRegister : handleVerify} 
+            onSubmit={mode === 'login' ? handleLogin : handleRegister} 
             className="space-y-4"
           >
 
@@ -199,6 +165,15 @@ export default function AuthPage() {
                   onChange={handleChange} 
                   placeholder="دمشق - شارع الحمراء" 
                 />
+                <Input 
+                  label="رمز التسجيل (من الأدمن)" 
+                  name="doctor_code" 
+                  type="text" 
+                  value={formData.doctor_code} 
+                  onChange={handleChange} 
+                  placeholder="ABC123XYZ" 
+                  maxLength={20}
+                />
               </>
             )}
 
@@ -223,37 +198,6 @@ export default function AuthPage() {
               </>
             )}
 
-            {mode === 'verify' && (
-              <>
-                <div className="text-center mb-4">
-                  <p className="text-slate-400 text-sm">
-                    تم إرسال كود التحقق إلى
-                  </p>
-                  <p className="text-cyan-400 font-semibold">{formData.email}</p>
-                </div>
-                <Input 
-                  label="كود التحقق (6 أرقام)" 
-                  name="code" 
-                  type="text" 
-                  value={formData.code} 
-                  onChange={handleChange} 
-                  placeholder="123456" 
-                  maxLength={6}
-                />
-
-                <div className="text-center">
-                  <button
-                    type="button"
-                    onClick={handleResendCode}
-                    disabled={loading}
-                    className="text-xs text-cyan-400 hover:text-cyan-300 underline disabled:opacity-50"
-                  >
-                    لم يصل الكود؟ إعادة الإرسال
-                  </button>
-                </div>
-              </>
-            )}
-
             <button
               type="submit"
               disabled={loading}
@@ -265,9 +209,7 @@ export default function AuthPage() {
                   جاري المعالجة...
                 </span>
               ) : (
-                mode === 'login' ? 'دخول' : 
-                mode === 'register' ? 'إنشاء الحساب' : 
-                'تفعيل الحساب'
+                mode === 'login' ? 'دخول' : 'إنشاء الحساب'
               )}
             </button>
           </form>
