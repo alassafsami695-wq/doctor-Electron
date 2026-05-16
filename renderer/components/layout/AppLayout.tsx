@@ -72,7 +72,7 @@ const menuItems: MenuItem[] = [
   },
 ];
 
-// ✅ Super Admin ONLY menu items
+// ✅ Super Admin ONLY menu items — تمت إضافة رموز التسجيل هنا
 const adminMenuItems: MenuItem[] = [
   { 
     label: '📊 لوحة التحكم', 
@@ -92,6 +92,13 @@ const adminMenuItems: MenuItem[] = [
     label: '💳 الاشتراكات', 
     href: '/admin/subscriptions', 
     icon: 'M20 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4V6h16v12zM8 8h2v8H8V8zm4 0h2v8h-2V8z',
+    permissions: [],
+    roles: ['super_admin']
+  },
+  { 
+    label: '🔑 رموز التسجيل', 
+    href: '/admin/doctor-codes', 
+    icon: 'M21 10.12h-6.78a2.19 2.19 0 00-1.86 1.05L10.12 14.5l-1.05 1.86a2.19 2.19 0 01-1.86 1.05H2.5v-2h4.71a.44.44 0 00.37-.21l1.05-1.86 1.24-2.33a2.19 2.19 0 011.86-1.05H21v2zm0 4h-4.71a.44.44 0 00-.37.21l-1.05 1.86-1.24 2.33a2.19 2.19 0 01-1.86 1.05H2.5v-2h6.78a2.19 2.19 0 001.86-1.05L12.88 16.5l1.05-1.86a2.19 2.19 0 011.86-1.05H21v2zM7 7a2 2 0 100-4 2 2 0 000 4zm0 2a4 4 0 00-4 4v1h8v-1a4 4 0 00-4-4z',
     permissions: [],
     roles: ['super_admin']
   },
