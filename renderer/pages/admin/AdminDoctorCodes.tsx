@@ -11,7 +11,7 @@ interface DoctorCode {
   updated_at: string;
 }
 
-export default function AdminDoctorCodesPage() {
+export default function AdminDoctorCodes() {
   const [codes, setCodes] = useState<DoctorCode[]>([]);
   const [loading, setLoading] = useState(true);
   const [showCreateModal, setShowCreateModal] = useState(false);
