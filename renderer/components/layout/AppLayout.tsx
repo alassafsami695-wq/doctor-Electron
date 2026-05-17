@@ -72,7 +72,7 @@ const menuItems: MenuItem[] = [
   },
 ];
 
-// ✅ Super Admin ONLY menu items — تمت إضافة رموز التسجيل هنا
+// ✅ Super Admin ONLY menu items
 const adminMenuItems: MenuItem[] = [
   { 
     label: '📊 لوحة التحكم', 
@@ -98,7 +98,7 @@ const adminMenuItems: MenuItem[] = [
   { 
     label: '🔑 رموز التسجيل', 
     href: '/admin/admin-doctor-codes', 
-    icon: 'M21 10.12h-6.78a2.19 2.19 0 00-1.86 1.05L10.12 14.5l-1.05 1.86a2.19 2.19 0 01-1.86 1.05H2.5v-2h4.71a.44.44 0 00.37-.21l1.05-1.86 1.24-2.33a2.19 2.19 0 011.86-1.05H21v2zm0 4h-4.71a.44.44 0 00-.37.21l-1.05 1.86-1.24 2.33a2.19 2.19 0 01-1.86 1.05H2.5v-2h6.78a2.19 2.19 0 001.86-1.05L12.88 16.5l1.05-1.86a2.19 2.19 0 01１．８６－１．０５Ｈ２１ｖ２ｚｍ７ ７ａ２ ２ ０ １００－４ ２ ２ ０ ０００４ｚｍ０ ２ａ４ ４ ０ ００－４ ４ｖ１ｈ８v－１ａ４ ４ ０ ００－４－４z',
+    icon: 'M21 10.12h-6.78a2.19 2.19 0 00-1.86 1.05L10.12 14.5l-1.05 1.86a2.19 2.19 0 01-1.86 1.05H2.5v-2h4.71a.44.44 0 00.37-.21l1.05-1.86 1.24-2.33a2.19 2.19 0 011.86-1.05H21v2zm0 4h-4.71a.44.44 0 00-.37.21l-1.05 1.86-1.24 2.33a2.19 2.19 0 01-1.86 1.05H2.5v-2h6.78a2.19 2.19 0 001.86-1.05L12.88 16.5l1.05-1.86a2.19 2.19 0 011.86-1.05H21v2zm-7 7a2 2 0 100-4 2 2 0 000 4zm0 2a4 4 0 00-4 4v1h8v-1a4 4 0 00-4-4z',
     permissions: [],
     roles: ['super_admin']
   },
@@ -107,12 +107,12 @@ const adminMenuItems: MenuItem[] = [
 // ✅ FIXED: Check if menu item is visible for user's role
 function isItemVisibleForRole(user: User | null | undefined, item: MenuItem): boolean {
   if (!user) return false;
-  
+
   // If item has specific roles, user must match
   if (item.roles && item.roles.length > 0) {
     return item.roles.includes(user.role);
   }
-  
+
   // Fallback: check permissions
   const userPerms = user.permissions || [];
   return item.permissions.length === 0 || item.permissions.some(p => userPerms.includes(p));
@@ -121,13 +121,13 @@ function isItemVisibleForRole(user: User | null | undefined, item: MenuItem): bo
 // ✅ FIXED: Helper to get display role text
 function getRoleDisplay(role?: string): string {
   if (!role) return 'موظف';
-  
+
   const roleStr = String(role).toLowerCase().trim();
-  
+
   if (roleStr === 'super_admin') return 'مدير النظام';
   if (roleStr === 'doctor' || roleStr === 'dentist') return 'طبيب أسنان';
   if (roleStr === 'receptionist' || roleStr === 'staff') return 'موظف استقبال';
-  
+
   return 'موظف';
 }
 
@@ -151,10 +151,10 @@ export default function AppLayout({ children, user: propUser }: AppLayoutProps) 
 
   // ✅ FIXED: Filter menu items by role
   const filteredMenuItems = menuItems.filter(item => isItemVisibleForRole(user, item));
-  
+
   // ✅ FIXED: Filter admin items by role
   const filteredAdminItems = adminMenuItems.filter(item => isItemVisibleForRole(user, item));
-  
+
   const allMenuItems = [...filteredMenuItems, ...filteredAdminItems];
 
   const handleLogout = () => {

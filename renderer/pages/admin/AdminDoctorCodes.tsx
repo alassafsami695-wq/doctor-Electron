@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '../../lib/api';
 
-// ✅ تعريف الواجهة داخل الملف لتجنب مشاكل الاستيراد
 interface DoctorCode {
   id: number;
   code: string;
